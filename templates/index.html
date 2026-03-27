@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CyberCafe Secure Access</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#070b12;--bg2:#0d1320;--bg3:#131c2b;--card:rgba(14,20,33,.84);--line:rgba(255,255,255,.09);--line-strong:rgba(255,255,255,.16);--text:#eff4fb;--muted:#8698b2;--dim:#5d6d86;--accent:#58a6ff;--accent-soft:rgba(88,166,255,.18);--accent-2:#82e0ff;--shadow:0 32px 80px rgba(0,0,0,.45)}
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{font-family:"Inter",sans-serif;color:var(--text);background:radial-gradient(circle at top center,rgba(88,166,255,.18),transparent 35%),radial-gradient(circle at 88% 80%,rgba(130,224,255,.12),transparent 25%),linear-gradient(180deg,#060911 0%,#0b1019 48%,#070b12 100%);min-height:100vh;overflow-x:hidden}
+        a{text-decoration:none;color:inherit}
+        .bg-glow,.bg-glow:before,.bg-glow:after{position:fixed;pointer-events:none}
+        .bg-glow{inset:0;z-index:0;overflow:hidden}
+        .bg-glow:before,.bg-glow:after{content:"";border-radius:50%;filter:blur(16px)}
+        .bg-glow:before{width:840px;height:840px;left:-180px;top:-280px;background:radial-gradient(circle,rgba(88,166,255,.2),transparent 68%)}
+        .bg-glow:after{width:620px;height:620px;right:-120px;bottom:-180px;background:radial-gradient(circle,rgba(130,224,255,.12),transparent 70%)}
+        .shell{position:relative;z-index:2}
+        .site-nav{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.1rem 5vw;background:rgba(7,11,18,.78);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+        .brand{display:flex;align-items:center;gap:.75rem}
+        .brand-mark{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;background:linear-gradient(135deg,#fff,#b9d8ff);color:#07101c;font-size:.95rem;font-weight:800}
+        .brand-copy strong{display:block;font-size:.96rem;letter-spacing:-.02em}
+        .brand-copy span{display:block;font-size:.78rem;color:var(--muted)}
+        .nav-links{display:flex;align-items:center;gap:.25rem;flex-wrap:wrap;justify-content:flex-end}
+        .nav-links a,.nav-links button{color:var(--muted);border:0;background:transparent;font:inherit;padding:.55rem .95rem;border-radius:999px;transition:.18s ease;cursor:pointer}
+        .nav-links a:hover,.nav-links button:hover{color:var(--text);background:rgba(255,255,255,.05)}
+        .nav-links .primary-link{background:#fff;color:#08111d;font-weight:700}
+        .nav-links .primary-link:hover{background:#ddeaff;color:#08111d}
+        .inline-form{display:inline}
+        .flash-stack{width:min(1200px,calc(100% - 2rem));margin:1rem auto 0;display:grid;gap:.8rem}
+        .flash{padding:.95rem 1rem;border-radius:16px;border:1px solid var(--line-strong);background:rgba(255,255,255,.04);color:var(--text)}
+        .flash-success,.flash-info{border-color:rgba(157,247,213,.22);background:rgba(157,247,213,.08)}
+        .flash-danger{border-color:rgba(255,116,116,.24);background:rgba(255,116,116,.08)}
+        .flash-warning{border-color:rgba(255,214,102,.24);background:rgba(255,214,102,.08)}
+        .hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:3.5rem;padding:6rem 5vw 5rem;min-height:calc(100vh - 84px)}
+        .hero-copy{animation:fade-up .7s ease both}
+        .hero-badge{display:inline-flex;align-items:center;gap:.55rem;padding:.45rem 1rem;border:1px solid var(--line-strong);border-radius:999px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;font-weight:700;margin-bottom:1.8rem}
+        .hero-badge span{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+        .hero h1{font-size:clamp(2.9rem,7vw,5.6rem);line-height:1.01;letter-spacing:-.05em;margin-bottom:1.35rem}
+        .hero h1 .dim{color:#93a7c4}
+        .hero p{max-width:620px;color:var(--muted);font-size:1.04rem;line-height:1.75;margin-bottom:2.2rem}
+        .hero-actions{display:flex;gap:.85rem;flex-wrap:wrap;margin-bottom:2.4rem}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.9rem 1.35rem;border-radius:12px;font-weight:700;transition:transform .18s ease,background .18s ease,border-color .18s ease}
+        .btn:hover{transform:translateY(-2px)}
+        .btn-primary{background:#fff;color:#08111d}
+        .btn-primary:hover{background:#dce8ff}
+        .btn-secondary{border:1px solid var(--line-strong);color:var(--text);background:rgba(255,255,255,.03)}
+        .btn-secondary:hover{background:rgba(255,255,255,.08)}
+        .hero-meta{display:flex;gap:1.4rem;flex-wrap:wrap;color:var(--dim);font-size:.88rem}
+        .hero-visual{position:relative;min-height:500px;animation:fade-up .8s .12s ease both}
+        .visual-card,.frame,.gallery-card,.pillar{box-shadow:var(--shadow)}
+        .visual-card{position:absolute;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:22px;background:#0d1320}
+        .visual-card:before,.frame:after{content:"";position:absolute;inset:0}
+        .visual-card:before{background:linear-gradient(180deg,rgba(4,8,15,.08),rgba(4,8,15,.82) 78%),linear-gradient(135deg,rgba(255,255,255,.05),transparent 42%);z-index:1}
+        .visual-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.02) contrast(1.02)}
+        .card-inner,.frame-content{position:relative;z-index:1;padding:1.2rem;height:100%;display:flex;flex-direction:column}
+        .card-inner{justify-content:flex-end}
+        .visual-card small{display:block;color:#a3b4ce;text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;margin-bottom:.55rem}
+        .visual-card strong,.gallery-card strong{display:block;font-size:1rem;line-height:1.35}
+        .visual-card p,.gallery-card p,.pillar p,.feature-copy p,.why-copy p,.pillars-head p{color:var(--muted);line-height:1.7}
+        .visual-card p{margin:.5rem 0 0;font-size:.82rem}
+        .visual-card.large{width:330px;height:240px;top:14px;left:20px;animation:float-a 7s ease-in-out infinite alternate}
+        .visual-card.medium{width:280px;height:205px;top:0;right:10px;animation:float-b 6s ease-in-out infinite alternate}
+        .visual-card.small{width:240px;height:190px;bottom:25px;left:52px;animation:float-c 8s ease-in-out infinite alternate}
+        .visual-card.tall{width:300px;height:230px;right:30px;bottom:0;animation:float-a 9s .7s ease-in-out infinite alternate-reverse}
+        .status-pills{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.8rem}
+        .status-pills span{border-radius:999px;padding:.36rem .7rem;background:rgba(255,255,255,.06);color:#c9d8ee;font-size:.72rem}
+        .stats-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(13,19,32,.82)}
+        .stat{padding:2rem 1.2rem;text-align:center;border-right:1px solid var(--line)}
+        .stat:last-child{border-right:0}
+        .stat strong{display:block;font-size:2.2rem;letter-spacing:-.04em;margin-bottom:.3rem}
+        .stat span{color:var(--muted);font-size:.84rem;text-transform:uppercase;letter-spacing:.08em}
+        .feature-section,.why-section,.pillars-section{padding:6rem 5vw;border-bottom:1px solid var(--line)}
+        .feature-grid,.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+        .feature-grid.reverse .feature-copy{order:1}
+        .feature-grid.reverse .feature-art{order:2}
+        .section-tag{display:inline-block;margin-bottom:1rem;color:var(--muted);text-transform:uppercase;letter-spacing:.13em;font-size:.72rem;font-weight:700}
+        .feature-copy h2,.why-copy h2,.pillars-head h2{font-size:clamp(2rem,4vw,3rem);line-height:1.08;letter-spacing:-.04em;margin-bottom:1rem}
+        .feature-copy h2 span,.why-copy h2 span{color:var(--accent)}
+        .feature-copy p,.why-copy p,.pillars-head p{max-width:560px}
+        .feature-list,.why-list{list-style:none;margin:1.8rem 0 2rem;display:grid;gap:.85rem}
+        .feature-list li,.why-list li{display:flex;gap:.8rem;align-items:flex-start;color:var(--muted);line-height:1.6}
+        .feature-list li:before,.why-list li:before{content:"↗";color:var(--accent);font-weight:800;margin-top:.08rem}
+        .feature-art{position:relative;height:410px}
+        .frame{position:absolute;border-radius:24px;border:1px solid rgba(255,255,255,.12);overflow:hidden;background:#0d1320}
+        .frame:after{background:linear-gradient(180deg,rgba(4,8,15,.12),rgba(4,8,15,.82) 80%),linear-gradient(160deg,rgba(255,255,255,.05),transparent 45%);pointer-events:none;z-index:1}
+        .frame.primary{width:320px;height:340px;left:16px;top:0;animation:float-a 8s ease-in-out infinite alternate}
+        .frame.secondary{width:240px;height:215px;right:20px;bottom:8px;animation:float-b 6.5s ease-in-out infinite alternate}
+        .frame img,.gallery-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+        .frame-kicker{display:block;color:#b6c9e4;text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;margin-bottom:.55rem}
+        .frame-title{font-size:.98rem;font-weight:700;margin-bottom:.55rem;line-height:1.35}
+        .frame-text{color:#c3d3e8;font-size:.82rem;line-height:1.6}
+        .metric-row{margin-top:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem}
+        .metric{padding:.9rem;border-radius:16px;background:rgba(6,10,18,.48);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(8px)}
+        .metric strong{display:block;font-size:1.2rem;margin-bottom:.2rem}
+        .metric span{color:#b0c2d8;font-size:.76rem;text-transform:uppercase;letter-spacing:.08em}
+        .why-gallery{display:grid;grid-template-columns:1.15fr 1fr;grid-template-rows:repeat(2,minmax(180px,1fr));gap:1rem;min-height:430px}
+        .gallery-card{position:relative;border-radius:22px;border:1px solid rgba(255,255,255,.1);overflow:hidden;background:#0d1320;padding:1.2rem;display:flex;flex-direction:column;justify-content:flex-end;animation:float-a 8s ease-in-out infinite alternate}
+        .gallery-card:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,8,15,.1),rgba(4,8,15,.85) 82%),linear-gradient(135deg,rgba(255,255,255,.05),transparent 40%);z-index:1}
+        .gallery-card:nth-child(2){animation-direction:alternate-reverse;animation-duration:6.5s}
+        .gallery-card:nth-child(3){animation-duration:9s}
+        .gallery-card.tall{grid-row:span 2}
+        .gallery-card strong,.gallery-card p{position:relative;z-index:2}
+        .gallery-card p{font-size:.84rem;color:#c3d3e8}
+        .pillars-head{text-align:center;margin-bottom:3rem}
+        .pillars-head p{margin:0 auto}
+        .pillars-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid var(--line);border-radius:24px;overflow:hidden;background:var(--line)}
+        .pillar{background:rgba(13,19,32,.92);padding:2rem 1.4rem;transition:background .2s ease}
+        .pillar:hover{background:rgba(19,28,43,.96)}
+        .pillar-mark{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.2rem;background:var(--accent-soft);margin-bottom:1rem}
+        .pillar h3{font-size:.97rem;margin-bottom:.55rem}
+        .pillar p{font-size:.84rem}
+        .site-footer{padding:2.5rem 5vw 1.6rem}
+        .footer-top,.footer-bottom{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+        .footer-top{padding-bottom:1.7rem}
+        .footer-bottom{padding-top:1.2rem;border-top:1px solid var(--line);color:var(--dim);font-size:.8rem}
+        .footer-brand strong{display:block;margin-bottom:.4rem}
+        .footer-brand p,.footer-col a{color:var(--muted);font-size:.85rem;line-height:1.7}
+        .footer-links{display:flex;gap:2rem;flex-wrap:wrap}
+        .footer-col h4{text-transform:uppercase;letter-spacing:.12em;font-size:.75rem;color:var(--dim);margin-bottom:.75rem}
+        .footer-col a{display:block;margin-bottom:.35rem}
+        @keyframes fade-up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes float-a{from{transform:translateY(0)}to{transform:translateY(-16px)}}
+        @keyframes float-b{from{transform:translateY(-6px) rotate(-.6deg)}to{transform:translateY(12px) rotate(.5deg)}}
+        @keyframes float-c{from{transform:translateY(10px) rotate(.4deg)}to{transform:translateY(-8px) rotate(-.4deg)}}
+        @media (max-width:1080px){.hero,.feature-grid,.why-grid{grid-template-columns:1fr}.hero{min-height:auto;padding-top:4.5rem}.hero-visual{min-height:460px}.stats-bar,.pillars-grid{grid-template-columns:repeat(2,1fr)}}
+        @media (max-width:760px){.site-nav{align-items:flex-start;flex-direction:column}.nav-links{width:100%;justify-content:flex-start}.hero h1{font-size:2.9rem}.hero-visual,.feature-art,.why-gallery{min-height:0;height:auto}.visual-card,.frame{position:relative;inset:auto;width:100%;left:auto;right:auto;top:auto;bottom:auto;margin-bottom:1rem;animation:none}.why-gallery{grid-template-columns:1fr;grid-template-rows:auto}.gallery-card,.gallery-card.tall{min-height:180px;grid-row:auto;animation:none}.stats-bar,.pillars-grid{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid var(--line)}.stat:last-child{border-bottom:0}}
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="shell">
+        <header class="site-nav">
+            <a href="{{ url_for('index') }}" class="brand">
+                <div class="brand-mark">CC</div>
+                <div class="brand-copy">
+                    <strong>CyberCafe Secure Access</strong>
+                    <span>Secure · Real-time · Browser-based</span>
+                </div>
+            </a>
+            <nav class="nav-links">
+                <a href="{{ url_for('index') }}">Home</a>
+                {% if user %}
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    {% if user["role"] == "admin" %}
+                        <a href="{{ url_for('monitoring') }}">Monitoring</a>
+                        <a href="{{ url_for('reports') }}">Reports</a>
+                    {% endif %}
+                    <form method="post" action="{{ url_for('logout') }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="primary-link">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{{ url_for('privacy') }}">Privacy</a>
+                    <a href="{{ url_for('login') }}">Sign In</a>
+                    <a href="{{ url_for('register') }}" class="primary-link">Create Account</a>
+                {% endif %}
+            </nav>
+        </header>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <section class="flash-stack">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+        <main>
+            <section class="hero">
+                <div class="hero-copy">
+                    <div class="hero-badge"><span></span>Secure cafe operations</div>
+                    <h1>The smartest way to<br><span class="dim">run your internet cafe.</span></h1>
+                    <p>Manage customer records, control staff access, monitor sessions in real time, and keep shared terminals secure from one clean dashboard built for cybercafes.</p>
+                    <div class="hero-actions">
+                        {% if user %}
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Open Dashboard</a>
+                            {% if user["role"] == "admin" %}
+                                <a href="{{ url_for('monitoring') }}" class="btn btn-secondary">View Monitoring</a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ url_for('register') }}" class="btn btn-primary">Create Account</a>
+                            <a href="{{ url_for('login') }}" class="btn btn-secondary">Sign In</a>
+                        {% endif %}
+                    </div>
+                    <div class="hero-meta">
+                        <span>Role-based access</span>
+                        <span>Audit logging</span>
+                        <span>Session protection</span>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <article class="visual-card large">
+                        <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80" alt="Modern computer workspace with multiple screens">
+                        <div class="card-inner"><small>Live dashboard</small><strong>Track users, terminals, and staff actions from one secure control surface.</strong><div class="status-pills"><span>Admin view</span><span>Masked email</span><span>Safe sessions</span></div></div>
+                    </article>
+                    <article class="visual-card medium">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="Person working on a laptop in a public workspace">
+                        <div class="card-inner"><small>Session security</small><strong>Automatic timeout keeps public machines from staying open too long.</strong><p>Shared access environments need fast lockout, safe cookies, and visible accountability.</p></div>
+                    </article>
+                    <article class="visual-card small">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80" alt="Close-up of secure technology hardware">
+                        <div class="card-inner"><small>Audit trail</small><strong>Every login, record change, and logout is captured for review.</strong><p>Built for administrators who need clarity without clutter.</p></div>
+                    </article>
+                    <article class="visual-card tall">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80" alt="Desk setup with computer and management tools">
+                        <div class="card-inner"><small>Record workflow</small><strong>Staff capture customer details quickly while admins keep full oversight.</strong><p>Simple forms. Clear ownership. Strong privacy defaults.</p></div>
+                    </article>
+                </div>
+            </section>
+            <section class="stats-bar">
+                <div class="stat"><strong>{{ stats.users }}+</strong><span>Registered users</span></div>
+                <div class="stat"><strong>{{ stats.records }}+</strong><span>Protected records</span></div>
+                <div class="stat"><strong>{{ stats.events }}+</strong><span>Logged activities</span></div>
+                <div class="stat"><strong>30m</strong><span>Auto session timeout</span></div>
+            </section>
+            <section class="feature-section">
+                <div class="feature-grid">
+                    <div class="feature-art">
+                        <div class="frame primary">
+                            <div class="frame-content">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80" alt="People working together at a computer desk">
+                                <span class="frame-kicker">Customer intake</span>
+                                <div class="frame-title">Fast counter-side record capture for busy cybercafe service.</div>
+                                <div class="frame-text">Collect names, phone numbers, emails, and terminal assignments without slowing down front-desk flow.</div>
+                                <div class="metric-row">
+                                    <div class="metric"><strong>Staff</strong><span>Scoped access</span></div>
+                                    <div class="metric"><strong>Admin</strong><span>Full visibility</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="frame secondary">
+                            <div class="frame-content">
+                                <img src="https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=900&q=80" alt="Close-up of someone using a laptop in an office">
+                                <span class="frame-kicker">Protected identity</span>
+                                <div class="frame-title">Sensitive customer details stay controlled in staff workflows.</div>
+                                <div class="frame-text">Clear access boundaries help reduce unnecessary exposure in shared environments.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-copy">
+                        <div class="section-tag">Customer Record Management</div>
+                        <h2>Every customer. <span>Every terminal.</span> All tracked.</h2>
+                        <p>Staff can record customer name, phone, email, and assigned terminal in one streamlined workflow. Admins see the full picture while staff stay focused on the records they own.</p>
+                        <ul class="feature-list">
+                            <li>Capture customer details in a form designed for fast counter service.</li>
+                            <li>Keep admin-level visibility across all staff activity and record updates.</li>
+                            <li>Mask sensitive email data on screen to reduce exposure in shared spaces.</li>
+                            <li>Write every change to the audit trail for accountability and review.</li>
+                        </ul>
+                        <a href="{{ url_for('dashboard') if user else url_for('register') }}" class="btn btn-primary">{{ "Open Dashboard" if user else "Create Account" }}</a>
+                    </div>
+                </div>
+            </section>
+            <section class="feature-section">
+                <div class="feature-grid reverse">
+                    <div class="feature-copy">
+                        <div class="section-tag">Access Control and Authentication</div>
+                        <h2>Staff sign in. <span>Nobody else</span> gets through.</h2>
+                        <p>Shared cafe environments need more than a basic login screen. This system uses role-aware authentication, secure password storage, inactivity timeout, and failed-attempt monitoring to keep access under control.</p>
+                        <ul class="feature-list">
+                            <li>The first registered account becomes the administrator automatically.</li>
+                            {% if admin_email_domain %}
+                            <li>Any account using the @{{ admin_email_domain }} email domain also receives administrator access.</li>
+                            {% endif %}
+                            <li>Repeated failed sign-ins trigger a temporary block for safer operations.</li>
+                            <li>Sessions expire after inactivity to protect unattended terminals.</li>
+                            <li>Login events are logged with user, IP, and browser metadata.</li>
+                        </ul>
+                        <a href="{{ url_for('login') if not user else url_for('dashboard') }}" class="btn btn-primary">{{ "Sign In Now" if not user else "Return to Dashboard" }}</a>
+                    </div>
+                    <div class="feature-art">
+                        <div class="frame primary">
+                            <div class="frame-content">
+                                <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80" alt="Secure workstation with multiple code and login screens">
+                                <span class="frame-kicker">Secure login</span>
+                                <div class="frame-title">Authentication built for public terminals and multi-staff access.</div>
+                                <div class="frame-text">Role-aware sign-in, monitoring, and lockout protection help keep access under control.</div>
+                                <div class="metric-row">
+                                    <div class="metric"><strong>5 tries</strong><span>Lockout threshold</span></div>
+                                    <div class="metric"><strong>15 min</strong><span>Block window</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="frame secondary">
+                            <div class="frame-content">
+                                <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80" alt="Team watching data on a shared screen">
+                                <span class="frame-kicker">Session watch</span>
+                                <div class="frame-title">Auto-expiry helps keep unattended machines from staying signed in.</div>
+                                <div class="metric"><strong>30m</strong><span>Inactivity timeout</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="why-section">
+                <div class="why-grid">
+                    <div class="why-copy">
+                        <div class="section-tag">Why It Works</div>
+                        <h2>No shortcuts. <span>Security first.</span></h2>
+                        <p>This platform is shaped around the realities of public browsing spaces: shared machines, multiple staff roles, sensitive records, and the need for clear oversight without slowing day-to-day work.</p>
+                        <ul class="why-list">
+                            <li>Passwords are hashed instead of stored in plain text.</li>
+                            <li>Every form submission is protected with CSRF validation.</li>
+                            <li>Audit events create a dependable trace of account and record activity.</li>
+                            <li>Brute-force protection slows repeated login abuse.</li>
+                            <li>Auto expiry helps keep unattended terminals from staying signed in.</li>
+                        </ul>
+                    </div>
+                    <div class="why-gallery">
+                        <article class="gallery-card tall"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80" alt="Operations team in a modern workspace"><strong>Operations Overview</strong><p>See staff activity, recent events, and record flow in one place instead of juggling disconnected screens.</p></article>
+                        <article class="gallery-card"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="Person working privately on a laptop"><strong>Privacy by Default</strong><p>Customer details are surfaced carefully so staff can work without exposing more than necessary.</p></article>
+                        <article class="gallery-card"><img src="https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?auto=format&fit=crop&w=900&q=80" alt="Row of computer screens in a shared workspace"><strong>Shared Terminal Safety</strong><p>Timeouts, role checks, and secure sessions reduce the risk that comes with public machines.</p></article>
+                    </div>
+                </div>
+            </section>
+            <section class="pillars-section">
+                <div class="pillars-head">
+                    <h2>Built secure from the ground up.</h2>
+                    <p>Every layer of this system supports safe, accountable use in a real cybercafe environment.</p>
+                </div>
+                <div class="pillars-grid">
+                    <article class="pillar"><div class="pillar-mark">#</div><h3>Password Hashing</h3><p>Passwords are securely hashed before storage so raw credentials are never written directly to the database.</p></article>
+                    <article class="pillar"><div class="pillar-mark">+</div><h3>CSRF Protection</h3><p>Critical forms include CSRF tokens to guard against forged cross-site requests.</p></article>
+                    <article class="pillar"><div class="pillar-mark">=</div><h3>Secure Sessions</h3><p>Session timeout and safe cookie behavior help limit risk on shared browsing machines.</p></article>
+                    <article class="pillar"><div class="pillar-mark">*</div><h3>Audit Logging</h3><p>Record creation, edits, deletes, sign-ins, and sign-outs are captured for monitoring and reports.</p></article>
+                </div>
+            </section>
+        </main>
+        <footer class="site-footer">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <strong>CyberCafe Secure Access</strong>
+        
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>System</h4>
+                        <a href="{{ url_for('index') }}">Home</a>
+                        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                        {% if not user %}
+                            <a href="{{ url_for('privacy') }}">Privacy</a>
+                        {% endif %}
+                    </div>
+                    <div class="footer-col">
+                        <h4>Access</h4>
+                        {% if user %}
+                            <a href="{{ url_for('dashboard') }}">Workspace</a>
+                            {% if user["role"] == "admin" %}
+                                <a href="{{ url_for('monitoring') }}">Monitoring</a>
+                                <a href="{{ url_for('reports') }}">Reports</a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ url_for('register') }}">Register</a>
+                            <a href="{{ url_for('login') }}">Login</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 CyberCafe Secure Access. All rights reserved.</span>
+                <span>Secure · Private · Built for cafes</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block body_class %}dashboard-page{% endblock %}
+{% block header_class %}dashboard-header{% endblock %}
+{% block main_class %}dashboard-container{% endblock %}
+{% block content %}
+<section class="page-head dashboard-head">
+    <div>
+        <span class="eyebrow">Monitoring</span>
+        <h1>Security Activity Overview</h1>
+        <p class="dashboard-copy">Review active usage, suspicious sign-in attempts, and recent system activity from the same dark admin workspace.</p>
+    </div>
+</section>
+
+<section class="dashboard-stats">
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Active Users</span>
+        <strong>{{ summary.active_users }}</strong>
+    </article>
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Failed Logins</span>
+        <strong>{{ summary.failed_logins }}</strong>
+    </article>
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Customer Records</span>
+        <strong>{{ summary.records }}</strong>
+    </article>
+</section>
+
+<section class="grid-two admin-grid">
+    <article class="panel dashboard-panel">
+        <h3>Recent Activity</h3>
+        <div class="table-wrap">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>User</th>
+                        <th>Event</th>
+                        <th>IP Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in recent_activity %}
+                        <tr>
+                            <td>{{ item["created_at"] }}</td>
+                            <td>{{ item["username"] or "system" }}</td>
+                            <td>{{ item["details"] }}</td>
+                            <td>{{ item["ip_address"] }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="empty-state">No activity logged yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <article class="panel dashboard-panel">
+        <h3>High-Risk Login Attempts</h3>
+        <div class="table-wrap">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>IP Address</th>
+                        <th>Failures</th>
+                        <th>Last Attempt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attempt in failed_attempts %}
+                        <tr>
+                            <td>{{ attempt["username"] }}</td>
+                            <td>{{ attempt["ip_address"] }}</td>
+                            <td>{{ attempt["failures"] }}</td>
+                            <td>{{ attempt["last_attempt"] }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="empty-state">No failed login attempts recorded.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>
+{% endblock %}

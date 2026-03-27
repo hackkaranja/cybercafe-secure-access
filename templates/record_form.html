@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-shell">
+    <div class="panel">
+        <h1>{{ "Create Record" if mode == "create" else "Edit Record" }}</h1>
+        <form method="post" class="form-grid">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label>Customer Name
+                <input type="text" name="customer_name" value="{{ record['customer_name'] if record else '' }}" required>
+            </label>
+            <label>Email
+                <input type="email" name="email" value="{{ record['email'] if record else '' }}" required>
+            </label>
+            <label>Phone
+                <input type="text" name="phone" value="{{ record['phone'] if record else '' }}" required>
+            </label>
+            <label>Terminal Label
+                <input type="text" name="terminal_label" value="{{ record['terminal_label'] if record else '' }}" required>
+            </label>
+            <label>Access Notes
+                <textarea name="access_notes" rows="5">{{ record['access_notes'] if record else '' }}</textarea>
+            </label>
+            <button type="submit" class="button primary">{{ "Save Record" if mode == "create" else "Update Record" }}</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

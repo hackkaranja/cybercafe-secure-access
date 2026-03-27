@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel">
+    <span class="eyebrow">Error</span>
+    <h1>{{ error.code }} - {{ error.name }}</h1>
+    <p>{{ error.description }}</p>
+    <a class="button primary" href="{{ url_for('index') }}">Return Home</a>
+</section>
+{% endblock %}

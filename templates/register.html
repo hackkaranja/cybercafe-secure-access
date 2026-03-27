@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block body_class %}auth-page{% endblock %}
+{% block header_class %}auth-header{% endblock %}
+{% block main_class %}auth-container{% endblock %}
+{% block content %}
+<section class="form-shell auth-shell">
+    <div class="auth-backdrop">
+        <div class="auth-panel narrow">
+            <span class="auth-kicker">Create Staff Account</span>
+            <h1>Register</h1>
+            <p class="auth-copy">Set up a secure account for managing customer records, terminal activity, and protected access.</p>
+            {% if admin_email_domain %}
+                <p class="auth-copy">Any account registered with an <strong>@{{ admin_email_domain }}</strong> email address is granted admin access.</p>
+            {% endif %}
+            <form method="post" class="form-grid auth-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label>Full Name
+                    <input type="text" name="full_name" required>
+                </label>
+                <label>Username
+                    <input type="text" name="username" required>
+                </label>
+                <label>Email
+                    <input type="email" name="email" required>
+                </label>
+                <label>Password
+                    <input type="password" name="password" minlength="8" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}" title="Use at least 8 characters with uppercase, lowercase, and a symbol." required>
+                </label>
+                <p class="auth-copy">Use at least 8 characters with uppercase, lowercase, and a symbol.</p>
+                <label>Confirm Password
+                    <input type="password" name="confirm_password" minlength="8" required>
+                </label>
+                <label class="consent-check">
+                    <input type="checkbox" name="accept_terms" value="yes" required>
+                    <span>I have read and agree to the <button type="button" class="modal-link" data-modal-target="privacy-modal">Privacy Policy</button> and <button type="button" class="modal-link" data-modal-target="terms-modal">Terms and Conditions</button>.</span>
+                </label>
+                <button type="submit" class="button primary">Create Account</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<dialog id="privacy-modal" class="policy-modal">
+    <div class="policy-modal-card">
+        <div class="policy-modal-head">
+            <div>
+                <span class="auth-kicker">Privacy Policy</span>
+                <h2>How CyberCafe Secure Access handles data</h2>
+            </div>
+            <button type="button" class="policy-close" data-close-modal="privacy-modal">Close</button>
+        </div>
+        <div class="policy-modal-body">
+            <section class="policy-block">
+                <h3>1. Information We Collect</h3>
+                <p>CyberCafe Secure Access may store staff account details such as full name, username, email address, password hash, and role. The system may also store customer record information entered by staff, including customer name, email, phone number, and assigned terminal label.</p>
+                <p>For security and administration, the system may also record event data such as login attempts, timestamps, IP addresses, user activity details, and related audit information.</p>
+            </section>
+            <section class="policy-block">
+                <h3>2. How Information Is Used</h3>
+                <p>Collected data is used to authenticate users, manage customer records, monitor security activity, generate operational reports, and support accountability in shared public computer environments.</p>
+            </section>
+            <section class="policy-block">
+                <h3>3. Security Measures</h3>
+                <ul class="privacy-list">
+                    <li>Passwords are stored as hashes rather than plain text.</li>
+                    <li>Authenticated access is required before protected areas can be used.</li>
+                    <li>CSRF protection helps guard sensitive form submissions.</li>
+                    <li>Sessions expire automatically after inactivity.</li>
+                    <li>Important actions are logged for review and incident response.</li>
+                    <li>Customer email addresses may be masked in key interface views.</li>
+                </ul>
+            </section>
+            <section class="policy-block">
+                <h3>4. Data Sharing and Retention</h3>
+                <p>Information stored by the system is intended for internal cybercafe administration and security operations. Customer records, account details, and audit logs may be retained for operational, reporting, and security purposes in line with local policy or legal requirements.</p>
+            </section>
+            <section class="policy-block">
+                <h3>5. User Responsibility and Updates</h3>
+                <p>Staff and administrators are responsible for keeping credentials secure and using the system in ways that protect customer privacy. This policy may be updated as the system changes or new legal and security requirements apply.</p>
+            </section>
+        </div>
+    </div>
+</dialog>
+
+<dialog id="terms-modal" class="policy-modal">
+    <div class="policy-modal-card">
+        <div class="policy-modal-head">
+            <div>
+                <span class="auth-kicker">Terms and Conditions</span>
+                <h2>Rules for using CyberCafe Secure Access</h2>
+            </div>
+            <button type="button" class="policy-close" data-close-modal="terms-modal">Close</button>
+        </div>
+        <div class="policy-modal-body">
+            <section class="policy-block">
+                <h3>1. Acceptance of Terms</h3>
+                <p>By creating an account or using CyberCafe Secure Access, the user confirms that they have read, understood, and agreed to these Terms and Conditions together with the Privacy Policy presented by the system.</p>
+            </section>
+            <section class="policy-block">
+                <h3>2. Authorized Access</h3>
+                <p>Only approved staff and administrators may access the system. Users must not share credentials, attempt to access another user's account, or use the system for unauthorized monitoring or record manipulation.</p>
+            </section>
+            <section class="policy-block">
+                <h3>3. Proper Use of Records</h3>
+                <p>Customer information entered into the system must be used only for legitimate operational, administrative, and security purposes. Users must avoid misuse, unnecessary disclosure, or unauthorized copying of stored data.</p>
+            </section>
+            <section class="policy-block">
+                <h3>4. Security Responsibilities</h3>
+                <ul class="privacy-list">
+                    <li>Keep login details confidential and secure.</li>
+                    <li>Log out after using shared or public terminals.</li>
+                    <li>Use accurate information when creating or updating records.</li>
+                    <li>Report suspected misuse, compromise, or security issues promptly.</li>
+                    <li>Respect role-based access limits enforced by the system.</li>
+                </ul>
+            </section>
+            <section class="policy-block">
+                <h3>5. Monitoring, Restrictions, and Updates</h3>
+                <p>The system may record user actions, login activity, timestamps, and related audit data for security and accountability. Accounts may be restricted where misuse or security concerns are detected, and these terms may be updated as operational needs or legal requirements change.</p>
+            </section>
+        </div>
+    </div>
+</dialog>
+
+<script>
+    for (const trigger of document.querySelectorAll("[data-modal-target]")) {
+        trigger.addEventListener("click", () => {
+            const modal = document.getElementById(trigger.dataset.modalTarget);
+            if (modal) modal.showModal();
+        });
+    }
+
+    for (const closer of document.querySelectorAll("[data-close-modal]")) {
+        closer.addEventListener("click", () => {
+            const modal = document.getElementById(closer.dataset.closeModal);
+            if (modal) modal.close();
+        });
+    }
+
+    for (const modal of document.querySelectorAll(".policy-modal")) {
+        modal.addEventListener("click", (event) => {
+            const bounds = modal.querySelector(".policy-modal-card").getBoundingClientRect();
+            const clickedOutside =
+                event.clientX < bounds.left ||
+                event.clientX > bounds.right ||
+                event.clientY < bounds.top ||
+                event.clientY > bounds.bottom;
+            if (clickedOutside) modal.close();
+        });
+    }
+</script>
+{% endblock %}

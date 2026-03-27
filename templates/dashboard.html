@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block body_class %}dashboard-page{% endblock %}
+{% block header_class %}dashboard-header{% endblock %}
+{% block main_class %}dashboard-container{% endblock %}
+{% block content %}
+<section class="page-head dashboard-head">
+    <div>
+        <span class="eyebrow">Dashboard</span>
+        <h1>Customer Account Records</h1>
+        <p class="dashboard-copy">Manage customer sessions, review masked identity details, and keep activity organized from one secure workspace.</p>
+    </div>
+    <a class="button primary" href="{{ url_for('create_record') }}">Add Record</a>
+</section>
+
+<section class="dashboard-stats">
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Total Records</span>
+        <strong>{{ records|length }}</strong>
+    </article>
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Protected Emails</span>
+        <strong>{{ records|length }}</strong>
+    </article>
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Tracked Terminals</span>
+        <strong>{{ records|map(attribute='terminal_label')|unique|list|length }}</strong>
+    </article>
+</section>
+
+<section class="panel dashboard-panel">
+    <div class="table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Terminal</th>
+                    <th>Owner</th>
+                    <th>Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                    <tr>
+                        <td>{{ record["customer_name"] }}</td>
+                        <td>{{ mask_email(record["email"]) }}</td>
+                        <td>{{ record["phone"] }}</td>
+                        <td>{{ record["terminal_label"] }}</td>
+                        <td>{{ record["owner_username"] }}</td>
+                        <td>{{ record["updated_at"] }}</td>
+                        <td class="actions-cell">
+                            <a class="button tiny secondary" href="{{ url_for('edit_record', record_id=record['id']) }}">Edit</a>
+                            <form method="post" action="{{ url_for('delete_record', record_id=record['id']) }}" class="inline-form">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="button tiny danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="empty-state">No records have been created yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

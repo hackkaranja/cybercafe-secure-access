@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block body_class %}dashboard-page{% endblock %}
+{% block header_class %}dashboard-header{% endblock %}
+{% block main_class %}dashboard-container{% endblock %}
+{% block content %}
+<section class="page-head dashboard-head">
+    <div>
+        <span class="eyebrow">Privacy Policy</span>
+        <h1>How CyberCafe Secure Access handles data</h1>
+        <p class="dashboard-copy">This privacy policy explains what information the system stores, how it is used, and the controls designed to protect customer and staff data in a shared cybercafe environment.</p>
+    </div>
+</section>
+
+<section class="dashboard-stats privacy-stats">
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Protected Access</span>
+        <strong>Auth</strong>
+    </article>
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Session Safety</span>
+        <strong>30m</strong>
+    </article>
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Core Principle</span>
+        <strong>Minimum Exposure</strong>
+    </article>
+</section>
+
+<section class="privacy-grid">
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>1. Information We Collect</h3>
+        <p>CyberCafe Secure Access may store staff account details such as full name, username, email address, password hash, and role. The system may also store customer record information entered by staff, including customer name, email, phone number, and assigned terminal label.</p>
+        <p>For security and administration, the system may also record event data such as login attempts, timestamps, IP addresses, user activity details, and related audit information.</p>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>2. How Information Is Used</h3>
+        <p>Collected data is used to authenticate users, manage customer records, monitor security activity, generate operational reports, and support accountability in shared public computer environments.</p>
+        <p>The system is designed to help staff work efficiently while allowing administrators to oversee usage, investigate incidents, and reduce misuse of public terminals.</p>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>3. Security Measures</h3>
+        <ul class="privacy-list">
+            <li>Passwords are stored as hashes rather than plain text.</li>
+            <li>Authenticated access is required before protected areas can be used.</li>
+            <li>CSRF protection helps guard sensitive form submissions.</li>
+            <li>Sessions expire automatically after inactivity.</li>
+            <li>Important actions are logged for review and incident response.</li>
+            <li>Customer email addresses may be masked in key interface views.</li>
+        </ul>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>4. Data Sharing</h3>
+        <p>Information stored by the system is intended for internal cybercafe administration and security operations. It should not be shared with unauthorized parties except where required by law, policy, or an authorized administrative process.</p>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>5. Data Retention</h3>
+        <p>Customer records, account details, and audit logs may be retained for operational, reporting, and security purposes. Retention periods should be reviewed by the organization running the system and adjusted according to local policy or legal requirements.</p>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>6. User Responsibility</h3>
+        <p>Staff and administrators are responsible for keeping credentials secure, logging out of shared devices when work is complete, and using the system in ways that protect customer privacy and comply with local rules.</p>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel privacy-panel-wide">
+        <h3>7. Policy Updates</h3>
+        <p>This privacy policy may be updated as the system changes, new security controls are introduced, or operating requirements evolve. The most current version published in the application should be treated as the active policy.</p>
+        <p>If this system is deployed in a real business environment, the operator should review this policy and adapt it to local legal, regulatory, and organizational privacy obligations before production use.</p>
+    </article>
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CyberCafe Secure Access</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <header class="site-header {% block header_class %}{% endblock %}">
+        <div class="brand">
+            <a href="{{ url_for('index') }}">CyberCafe Secure Access</a>
+            <p>Protecting customer accounts through access control and monitoring.</p>
+        </div>
+        <nav class="nav">
+            <a href="{{ url_for('index') }}">Home</a>
+            {% if current_user %}
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                {% if current_user["role"] == "admin" %}
+                    <a href="{{ url_for('monitoring') }}">Monitoring</a>
+                    <a href="{{ url_for('reports') }}">Reports</a>
+                {% endif %}
+                <form method="post" action="{{ url_for('logout') }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="link-button">Logout</button>
+                </form>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+                <a href="{{ url_for('terms') }}">Terms</a>
+                <a href="{{ url_for('privacy') }}">Privacy</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="container {% block main_class %}{% endblock %}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <section class="flash-stack">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

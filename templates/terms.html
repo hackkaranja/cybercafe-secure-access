@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block body_class %}dashboard-page{% endblock %}
+{% block header_class %}dashboard-header{% endblock %}
+{% block main_class %}dashboard-container{% endblock %}
+{% block content %}
+<section class="page-head dashboard-head">
+    <div>
+        <span class="eyebrow">Terms and Conditions</span>
+        <h1>Rules for using CyberCafe Secure Access</h1>
+        <p class="dashboard-copy">These terms outline the responsibilities of staff, administrators, and operators who use this system to manage customer records and secure access in a cybercafe environment.</p>
+    </div>
+</section>
+
+<section class="dashboard-stats privacy-stats">
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Authorized Use</span>
+        <strong>Only</strong>
+    </article>
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Shared Devices</span>
+        <strong>Logout</strong>
+    </article>
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Compliance</span>
+        <strong>Required</strong>
+    </article>
+</section>
+
+<section class="privacy-grid">
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>1. Acceptance of Terms</h3>
+        <p>By creating an account or using CyberCafe Secure Access, the user confirms that they have read, understood, and agreed to these Terms and Conditions together with the Privacy Policy presented by the system.</p>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>2. Authorized Access</h3>
+        <p>Only approved staff and administrators may access the system. Users must not share credentials, attempt to access another user's account, or use the system for unauthorized monitoring or record manipulation.</p>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>3. Proper Use of Records</h3>
+        <p>Customer information entered into the system must be used only for legitimate operational, administrative, and security purposes. Users must avoid misuse, unnecessary disclosure, or unauthorized copying of stored data.</p>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>4. Security Responsibilities</h3>
+        <ul class="privacy-list">
+            <li>Keep login details confidential and secure.</li>
+            <li>Log out after using shared or public terminals.</li>
+            <li>Use accurate information when creating or updating records.</li>
+            <li>Report suspected misuse, compromise, or security issues promptly.</li>
+            <li>Respect role-based access limits enforced by the system.</li>
+        </ul>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>5. Monitoring and Logs</h3>
+        <p>The system may record user actions, login activity, timestamps, and related audit data for security, reporting, and accountability. By using the platform, users acknowledge that such operational monitoring may occur.</p>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel">
+        <h3>6. Suspension or Restriction</h3>
+        <p>Accounts may be limited, suspended, or deactivated if misuse, repeated failed access attempts, policy violations, or security concerns are detected. Administrative action may be taken to protect system integrity and customer data.</p>
+    </article>
+
+    <article class="panel dashboard-panel privacy-panel privacy-panel-wide">
+        <h3>7. Local Compliance and Updates</h3>
+        <p>The operator of this system is responsible for ensuring that deployment and use comply with local laws, organizational rules, and privacy obligations. These terms may be updated as operational needs, security requirements, or legal expectations change.</p>
+        <p>Continued use of the system after updates may be treated as acceptance of the revised terms, unless the operator defines a different approval process.</p>
+    </article>
+</section>
+{% endblock %}

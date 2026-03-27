@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block body_class %}dashboard-page{% endblock %}
+{% block header_class %}dashboard-header{% endblock %}
+{% block main_class %}dashboard-container{% endblock %}
+{% block content %}
+<section class="page-head dashboard-head">
+    <div>
+        <span class="eyebrow">Reports</span>
+        <h1>User and Record Management Report</h1>
+        <p class="dashboard-copy">Summarize staff accounts, their roles, and how many customer records each user manages.</p>
+    </div>
+</section>
+
+<section class="dashboard-stats report-stats">
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Total Users</span>
+        <strong>{{ user_report|length }}</strong>
+    </article>
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Admin Accounts</span>
+        <strong>{{ user_report|selectattr('role', 'equalto', 'admin')|list|length }}</strong>
+    </article>
+    <article class="card dashboard-stat-card">
+        <span class="dashboard-stat-label">Managed Records</span>
+        <strong>{{ user_report|sum(attribute='managed_records') }}</strong>
+    </article>
+</section>
+
+<section class="panel dashboard-panel">
+    <div class="table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Registered On</th>
+                    <th>Managed Records</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in user_report %}
+                    <tr>
+                        <td>{{ row["username"] }}</td>
+                        <td>{{ row["role"] }}</td>
+                        <td>{{ row["created_at"] }}</td>
+                        <td>{{ row["managed_records"] }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="empty-state">No user data available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

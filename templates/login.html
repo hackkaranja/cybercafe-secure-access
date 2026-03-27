@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body_class %}auth-page{% endblock %}
+{% block header_class %}auth-header{% endblock %}
+{% block main_class %}auth-container{% endblock %}
+{% block content %}
+<section class="form-shell auth-shell">
+    <div class="auth-backdrop">
+        <div class="auth-panel narrow">
+            <span class="auth-kicker">Secure Access</span>
+            <h1>Sign In</h1>
+            <p class="auth-copy">Return to your cybercafe workspace with secure account access and protected sessions.</p>
+            <form method="post" class="form-grid auth-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label>Username
+                    <input type="text" name="username" required>
+                </label>
+                <label>Password
+                    <input type="password" name="password" required>
+                </label>
+                <button type="submit" class="button primary">Login</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
