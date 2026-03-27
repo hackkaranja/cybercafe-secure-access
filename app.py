@@ -20,7 +20,13 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASE = os.environ.get("DATABASE_PATH", os.path.join(BASE_DIR, "cafe_secure.db"))
+RAILWAY_VOLUME_MOUNT_PATH = os.environ.get("RAILWAY_VOLUME_MOUNT_PATH", "").strip()
+DEFAULT_DATABASE = (
+    os.path.join(RAILWAY_VOLUME_MOUNT_PATH, "cafe_secure.db")
+    if RAILWAY_VOLUME_MOUNT_PATH
+    else os.path.join(BASE_DIR, "cafe_secure.db")
+)
+DATABASE = os.environ.get("DATABASE_PATH", DEFAULT_DATABASE)
 
 
 def env_flag(name, default=False):
@@ -28,6 +34,11 @@ def env_flag(name, default=False):
     if value is None:
         return default
     return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+VERCEL = env_flag("VERCEL", default=False)
+if "DATABASE_PATH" not in os.environ and VERCEL and not RAILWAY_VOLUME_MOUNT_PATH:
+    DATABASE = "/tmp/cafe_secure.db"
 
 
 app = Flask(__name__)
@@ -259,6 +270,11 @@ def index():
         "events": db.execute("SELECT COUNT(*) AS count FROM activity_logs").fetchone()["count"],
     }
     return render_template("index.html", user=user, stats=stats)
+
+
+@app.route("/health")
+def health():
+    return {"status": "ok"}, 200
 
 
 @app.route("/register", methods=("GET", "POST"))

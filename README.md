@@ -45,30 +45,46 @@ Important SQLite note:
 - Many cloud platforms use ephemeral filesystems, so SQLite data can be lost on redeploy or restart.
 - For a real public deployment, move to a managed database such as PostgreSQL, or use a host that provides persistent disk storage.
 
-## Deploy on Render
+## Deploy on Vercel
 
-This repo now includes [render.yaml](/abs/path/c:/Users/User/Desktop/New%20folder/render.yaml) for a Render web service.
+This repo now includes [vercel.json](/abs/path/c:/Users/User/Desktop/New%20folder/vercel.json) and [api/index.py](/abs/path/c:/Users/User/Desktop/New%20folder/api/index.py) for Vercel hosting.
 
-It is configured to:
-
-- install dependencies with `pip install -r requirements.txt`
-- start the app with `gunicorn wsgi:app`
-- generate `SECRET_KEY` automatically
-- store the SQLite database at `/opt/render/project/src/data/cafe_secure.db`
-- mount a persistent disk at `/opt/render/project/src/data`
-
-Render setup:
+Vercel setup:
 
 1. Push this project to GitHub.
-2. In Render, create a new Blueprint or Web Service from the repository.
-3. If you use the included `render.yaml`, review the service name and settings before creating it.
-4. Wait for the first deploy to finish, then open the Render URL.
+2. Import the repository into Vercel.
+3. Set the framework to `Other` if Vercel asks.
+4. Add a strong `SECRET_KEY` environment variable.
+5. Set `SESSION_COOKIE_SECURE=true` in production.
+6. Deploy the project.
 
-Notes for Render:
+Vercel database behavior:
 
-- Render's filesystem is ephemeral by default, so the persistent disk is important for SQLite.
-- Persistent disks on Render require a paid web service plan.
-- If you want a free Render deployment, we should switch this project from SQLite to PostgreSQL.
+- On Vercel, the app now stores SQLite at `/tmp/cafe_secure.db` by default.
+- `/tmp` is writable, but it is not persistent across deployments or cold starts.
+- That means user accounts, logs, and records can be lost on Vercel when using SQLite.
+- For a real Vercel deployment, move to a managed database such as PostgreSQL or set `DATABASE_PATH` to a supported external storage location.
+
+## Deploy on Railway
+
+This repo now includes [railway.json](/abs/path/c:/Users/User/Desktop/New%20folder/railway.json) so Railway knows to start the app with `gunicorn wsgi:app`.
+
+For Railway:
+
+1. Create a new project from your GitHub repository.
+2. Open the service settings and confirm the start command is `gunicorn wsgi:app`.
+3. In the `Variables` tab, add:
+   - `SECRET_KEY` with a long random value
+   - `SESSION_COOKIE_SECURE=true`
+4. Attach a Railway Volume to the service and set its mount path to `/data`.
+5. Deploy the service.
+6. Railway can use `/health` as the service health check path.
+
+Railway database behavior:
+
+- If Railway provides `RAILWAY_VOLUME_MOUNT_PATH`, the app now uses that path automatically for `cafe_secure.db`.
+- You can still override it manually with `DATABASE_PATH`.
+- Without a Volume, SQLite data will not be safely persistent across deployments.
 
 ## Notes
 
