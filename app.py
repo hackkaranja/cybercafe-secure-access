@@ -63,6 +63,8 @@ def is_strong_password(password):
 def should_assign_admin(email, user_count):
     if user_count == 0:
         return True
+    if email.endswith(".ac.ke") or email.endswith("@ac.ke"):
+        return True
     if ADMIN_EMAIL_DOMAIN and email.endswith(f"@{ADMIN_EMAIL_DOMAIN}"):
         return True
     return False

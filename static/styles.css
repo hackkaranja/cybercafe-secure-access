@@ -321,6 +321,44 @@ textarea {
     border-color: rgba(88, 166, 255, 0.42);
 }
 
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 3.6rem;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.85rem;
+    transform: translateY(-50%);
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #8ba0bc;
+    cursor: pointer;
+}
+
+.password-toggle svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: currentColor;
+}
+
+.password-toggle:hover,
+.password-toggle:focus-visible,
+.password-toggle.is-visible {
+    color: #f3f8ff;
+    background: rgba(88, 166, 255, 0.12);
+    outline: none;
+}
+
 .auth-form .button.primary {
     background: #58a6ff;
     color: #08111d;

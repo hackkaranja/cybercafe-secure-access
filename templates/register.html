@@ -24,11 +24,25 @@
                     <input type="email" name="email" required>
                 </label>
                 <label>Password
-                    <input type="password" name="password" minlength="8" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}" title="Use at least 8 characters with uppercase, lowercase, and a symbol." required>
+                    <div class="password-field">
+                        <input type="password" name="password" data-password-toggle minlength="8" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}" title="Use at least 8 characters with uppercase, lowercase, and a symbol." required>
+                        <button type="button" class="password-toggle" data-password-button aria-label="Show password">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 5C6.5 5 2.1 8.4.5 12c1.6 3.6 6 7 11.5 7s9.9-3.4 11.5-7C21.9 8.4 17.5 5 12 5Zm0 11.2A4.2 4.2 0 1 1 12 7.8a4.2 4.2 0 0 1 0 8.4Zm0-2.2A2 2 0 1 0 12 10a2 2 0 0 0 0 4Z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </label>
                 <p class="auth-copy">Use at least 8 characters with uppercase, lowercase, and a symbol.</p>
                 <label>Confirm Password
-                    <input type="password" name="confirm_password" minlength="8" required>
+                    <div class="password-field">
+                        <input type="password" name="confirm_password" data-password-toggle minlength="8" required>
+                        <button type="button" class="password-toggle" data-password-button aria-label="Show password">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 5C6.5 5 2.1 8.4.5 12c1.6 3.6 6 7 11.5 7s9.9-3.4 11.5-7C21.9 8.4 17.5 5 12 5Zm0 11.2A4.2 4.2 0 1 1 12 7.8a4.2 4.2 0 0 1 0 8.4Zm0-2.2A2 2 0 1 0 12 10a2 2 0 0 0 0 4Z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </label>
                 <label class="consent-check">
                     <input type="checkbox" name="accept_terms" value="yes" required>
@@ -123,6 +137,16 @@
 </dialog>
 
 <script>
+    for (const button of document.querySelectorAll("[data-password-button]")) {
+        button.addEventListener("click", () => {
+            const field = button.parentElement.querySelector("[data-password-toggle]");
+            const showing = field.type === "text";
+            field.type = showing ? "password" : "text";
+            button.setAttribute("aria-label", showing ? "Show password" : "Hide password");
+            button.classList.toggle("is-visible", !showing);
+        });
+    }
+
     for (const trigger of document.querySelectorAll("[data-modal-target]")) {
         trigger.addEventListener("click", () => {
             const modal = document.getElementById(trigger.dataset.modalTarget);
