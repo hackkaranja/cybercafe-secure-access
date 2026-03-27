@@ -359,6 +359,19 @@ textarea {
     outline: none;
 }
 
+.forgot-password-link {
+    color: #8ebeff;
+    font-size: 0.95rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+    justify-self: start;
+}
+
+.forgot-password-link:hover,
+.forgot-password-link:focus-visible {
+    color: #f3f8ff;
+}
+
 .auth-form .button.primary {
     background: #58a6ff;
     color: #08111d;

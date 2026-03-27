@@ -5,6 +5,7 @@ import sqlite3
 import tempfile
 from datetime import datetime, timedelta
 from functools import wraps
+from urllib.parse import quote
 
 from flask import (
     Flask,
@@ -49,6 +50,11 @@ app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_SECURE"] = env_flag("SESSION_COOKIE_SECURE", default=False)
 ADMIN_EMAIL_DOMAIN = os.environ.get("ADMIN_EMAIL_DOMAIN", "").strip().lower().lstrip("@")
+SUPPORT_EMAIL = os.environ.get("SUPPORT_EMAIL", "support@cybercafe.local").strip()
+RESET_EMAIL_SUBJECT = quote("Password Reset Request")
+RESET_EMAIL_BODY = quote(
+    "Hello,\n\nI need help resetting my CyberCafe Secure Access password.\nUsername: \nEmail: \n\nThank you."
+)
 
 
 def is_strong_password(password):
@@ -203,6 +209,8 @@ def inject_user():
     return {
         "current_user": current_user(),
         "admin_email_domain": ADMIN_EMAIL_DOMAIN,
+        "support_email": SUPPORT_EMAIL,
+        "password_reset_mailto": f"mailto:{SUPPORT_EMAIL}?subject={RESET_EMAIL_SUBJECT}&body={RESET_EMAIL_BODY}",
     }
 
 
