@@ -2,6 +2,7 @@ import os
 import re
 import secrets
 import sqlite3
+import tempfile
 from datetime import datetime, timedelta
 from functools import wraps
 
@@ -38,7 +39,7 @@ def env_flag(name, default=False):
 
 VERCEL = env_flag("VERCEL", default=False)
 if "DATABASE_PATH" not in os.environ and VERCEL and not RAILWAY_VOLUME_MOUNT_PATH:
-    DATABASE = "/tmp/cafe_secure.db"
+    DATABASE = os.path.join(tempfile.gettempdir(), "cafe_secure.db")
 
 
 app = Flask(__name__)
